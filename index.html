@@ -1,0 +1,1782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Marta & Flo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Instrument+Serif:ital@0;1&family=Mulish:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFFFFF;
+    --cream-2:#F1F2E9;
+    --card:#FCFCF9;
+    --ink:#31371F;
+    --ink-soft:#6B7256;
+    --terracotta:#727F49;
+    --terracotta-deep:#565F35;
+    --olive:#AD8863;
+    --olive-deep:#8C6C49;
+    --gold:#A08249;
+    --line:rgba(49,55,31,0.14);
+    --shadow:0 10px 28px -18px rgba(49,55,31,0.28);
+    --duo-tint:#4A5330;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --cream:#1A1E12;
+      --cream-2:#232919;
+      --card:#232919;
+      --ink:#E9EDD8;
+      --ink-soft:#B7C0A0;
+      --terracotta:#A2B679;
+      --terracotta-deep:#87A05E;
+      --olive:#D3AE84;
+      --olive-deep:#B48F63;
+      --gold:#C9A96C;
+      --line:rgba(233,237,216,0.14);
+      --shadow:0 10px 28px -18px rgba(0,0,0,0.5);
+      --duo-tint:#232919;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --cream:#1A1E12;
+    --cream-2:#232919;
+    --card:#232919;
+    --ink:#E9EDD8;
+    --ink-soft:#B7C0A0;
+    --terracotta:#A2B679;
+    --terracotta-deep:#87A05E;
+    --olive:#D3AE84;
+    --olive-deep:#B48F63;
+    --gold:#C9A96C;
+    --line:rgba(233,237,216,0.14);
+    --shadow:0 10px 28px -18px rgba(0,0,0,0.5);
+    --duo-tint:#232919;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Mulish",system-ui,sans-serif;
+    font-size:16px;
+    line-height:1.6;
+    padding-inline: max(20px, env(safe-area-inset-left)) max(20px, env(safe-area-inset-right));
+    overflow-x:hidden;
+  }
+  h1,h2,h3{
+    font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    text-wrap:balance;
+    margin:0;
+    color:var(--terracotta-deep);
+  }
+  a{color:inherit;}
+  img,svg{max-width:100%;}
+  .wrap{max-width:760px;margin:0 auto;}
+
+  /* duotone photo treatment — unifies every photo with the site palette */
+  .duo{position:relative;overflow:hidden;background:var(--cream-2);}
+  .duo img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    filter:grayscale(1) contrast(1.08) brightness(1.04);
+  }
+  .duo::after{
+    content:"";position:absolute;inset:0;
+    background:var(--duo-tint);
+    mix-blend-mode:multiply;
+    opacity:.62;
+  }
+  .eyebrow{
+    font-size:0.72rem;
+    letter-spacing:0.22em;
+    text-transform:uppercase;
+    color:var(--terracotta-deep);
+    font-weight:700;
+    margin-bottom:10px;
+    display:block;
+  }
+  section{padding-block:76px;position:relative;}
+  section.tight{padding-block:56px;}
+
+  /* ---------- nav ---------- */
+  header.top{
+    position:sticky;
+    top:env(safe-area-inset-top,0px);
+    z-index:50;
+    background:color-mix(in srgb, var(--cream) 88%, transparent);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .navbar{
+    max-width:900px;margin:0 auto;
+    display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;
+    padding-block:14px;
+  }
+  .brand{
+    order:1;
+    font-family:"Cormorant Garamond",serif;
+    font-size:1.15rem;
+    font-style:italic;
+    font-weight:500;
+  }
+  .navactions{order:2;}
+  .langbar{display:flex;gap:6px;}
+  .langbtn{
+    border:1px solid var(--line);
+    background:transparent;
+    color:var(--ink-soft);
+    font-family:"Mulish",sans-serif;
+    font-weight:700;
+    font-size:0.72rem;
+    letter-spacing:0.04em;
+    border-radius:999px;
+    padding:5px 10px;
+    cursor:pointer;
+  }
+  .langbtn[aria-pressed="true"]{
+    background:var(--terracotta);
+    border-color:var(--terracotta);
+    color:#fff;
+  }
+  .indexBtn{
+    display:flex;align-items:center;justify-content:center;
+    background:transparent;border:1px solid var(--line);border-radius:999px;
+    width:36px;height:36px;padding:0;cursor:pointer;
+    color:var(--ink-soft);
+  }
+  .indexBtn:hover{border-color:var(--terracotta-deep);color:var(--terracotta-deep);}
+  .indexBtn svg{width:16px;height:16px;flex:none;}
+
+  /* ---------- index modal ---------- */
+  .index-overlay{
+    position:fixed;inset:0;z-index:200;
+    background:rgba(30,26,16,0.45);
+    display:none;align-items:flex-start;justify-content:center;
+    padding:8vh 16px 40px;overflow-y:auto;
+  }
+  .index-overlay.open{display:flex;}
+  .index-panel{
+    background:var(--cream);border-radius:14px;
+    max-width:820px;width:100%;
+    padding:26px 22px 30px;
+    box-shadow:var(--shadow);
+  }
+  .index-head{
+    display:flex;align-items:center;justify-content:flex-end;
+    margin-bottom:6px;
+  }
+  .index-close{
+    background:none;border:none;cursor:pointer;
+    font-size:1.7rem;line-height:1;color:var(--ink-soft);
+    width:34px;height:34px;border-radius:999px;flex:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .index-close:hover{background:var(--card);color:var(--ink);}
+  .index-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:12px;
+  }
+  .index-card{
+    display:flex;flex-direction:row;align-items:center;gap:12px;
+    padding:14px 16px;border:1px solid var(--line);border-radius:10px;
+    background:var(--card);text-decoration:none;color:inherit;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .index-card:hover{border-color:var(--terracotta-deep);transform:translateY(-2px);}
+  .index-icon{
+    width:32px;height:32px;border-radius:999px;flex:none;
+    background:color-mix(in srgb, var(--terracotta) 16%, transparent);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--terracotta-deep);
+  }
+  .index-icon svg{width:17px;height:17px;}
+  .index-card-title{
+    font-family:"Mulish",sans-serif;font-weight:700;font-size:0.92rem;color:var(--ink);
+  }
+
+  /* ---------- search ---------- */
+  .search-panel{max-width:480px;}
+  .search-box{
+    display:flex;align-items:center;gap:10px;
+    border:1px solid var(--line);border-radius:999px;
+    padding:10px 16px;color:var(--ink-soft);
+  }
+  .search-box svg{width:18px;height:18px;flex:none;}
+  .search-box input{
+    flex:1;border:none;outline:none;background:none;
+    font-family:"Mulish",sans-serif;font-size:1rem;color:var(--ink);
+  }
+  .search-status{margin-top:14px;font-size:0.85rem;color:var(--ink-soft);text-align:center;}
+  mark.search-hit{
+    background:color-mix(in srgb, var(--terracotta) 35%, transparent);
+    color:inherit;border-radius:2px;
+  }
+  mark.search-hit.search-current{
+    background:var(--terracotta);color:#fff;
+  }
+
+  /* ---------- hero photo ---------- */
+  .hero-photo{
+    width:100vw;margin-left:calc(50% - 50vw);
+    position:relative;overflow:hidden;padding:0;
+    height:clamp(520px,86vh,820px);
+  }
+  .hero-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 58%;display:block;filter:brightness(0.9) saturate(0.92);}
+  .hero-photo-scrim{
+    position:absolute;inset:0;
+    background:linear-gradient(180deg, rgba(20,18,10,0.32) 0%, rgba(20,18,10,0.24) 38%, rgba(20,18,10,0.5) 72%, rgba(20,18,10,0.82) 100%);
+  }
+  .hero-photo-text{
+    position:absolute;left:0;right:0;bottom:0;padding:0 24px 42px;text-align:center;
+  }
+  .hero-photo-text h1{
+    color:#fff;font-size:clamp(2.3rem,7.5vw,3.6rem);
+    text-shadow:0 2px 22px rgba(0,0,0,.35);
+  }
+  .hero-photo-text .amp{color:#F0D9B5;font-style:italic;}
+  .hero-photo-text .tagline{
+    margin-top:12px;color:rgba(255,255,255,.94);font-size:1.05rem;
+    text-shadow:0 1px 12px rgba(0,0,0,.35);
+  }
+
+  /* ---------- hero info ---------- */
+  .hero-info{padding-top:44px;padding-bottom:44px;text-align:center;}
+  .venue-name{
+    font-family:"Instrument Serif",serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:1.9rem;
+    letter-spacing:0.01em;
+    color:var(--ink);
+    display:inline-block;
+  }
+  .hero-info .datebig{
+    margin-top:6px;
+    color:var(--terracotta-deep);
+    font-family:"Instrument Serif",serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:1.5rem;
+    letter-spacing:0.01em;
+  }
+  .countdown{
+    margin-top:34px;
+    display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+  }
+  .countdown div{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:14px 18px;
+    min-width:76px;
+    box-shadow:var(--shadow);
+  }
+  .countdown b{
+    display:block;font-family:"Cormorant Garamond",serif;font-size:1.7rem;
+    font-variant-numeric:tabular-nums;color:var(--terracotta-deep);
+  }
+  .countdown small{
+    text-transform:uppercase;letter-spacing:0.08em;font-size:0.65rem;color:var(--ink-soft);
+  }
+  .cta-row{margin-top:36px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:13px 26px;
+    border-radius:999px;
+    font-weight:700;font-size:0.9rem;letter-spacing:0.02em;
+    text-decoration:none;
+    border:1px solid transparent;
+    cursor:pointer;
+    font-family:"Mulish",sans-serif;
+  }
+  .btn-primary{background:var(--terracotta);color:#fff;}
+  .btn-primary:hover{background:var(--terracotta-deep);}
+  .btn-ghost{background:transparent;border-color:var(--terracotta-deep);color:var(--terracotta-deep);}
+  .btn-ghost:hover{background:var(--terracotta-deep);color:#fff;}
+
+  /* ---------- divider ---------- */
+  .divider{width:100%;height:34px;display:block;color:var(--olive);opacity:.55;}
+
+  /* ---------- story ---------- */
+  .story{text-align:center;}
+  .story p{
+    max-width:62ch;margin:18px auto 0;
+    font-size:1.08rem;color:var(--ink-soft);
+  }
+  .gallery{margin-top:36px;}
+  .gallery-track{
+    display:flex;gap:16px;overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    padding:4px 4px 10px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .gallery-track::-webkit-scrollbar{display:none;}
+  .gallery-item{
+    flex:0 0 auto;width:74%;max-width:320px;
+    scroll-snap-align:center;
+  }
+  .gallery-photo{
+    width:100%;aspect-ratio:4/5;
+    border-radius:4px;overflow:hidden;
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+  }
+  .gallery-photo img{width:100%;height:100%;object-fit:cover;display:block;}
+  .gallery-caption{
+    margin-top:10px;text-align:center;
+    font-family:"Cormorant Garamond",serif;font-style:italic;
+    color:var(--ink-soft);font-size:1.05rem;
+  }
+  .gallery-hint{
+    margin-top:2px;text-align:center;font-size:0.72rem;
+    letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);opacity:.65;
+  }
+
+  /* ---------- schedule ---------- */
+  .timeline{max-width:560px;margin:44px auto 0;position:relative;}
+  .timeline::before{
+    content:"";position:absolute;left:23px;top:8px;bottom:8px;width:2px;
+    background:var(--line);
+  }
+  .tl-item{
+    position:relative;padding-left:76px;padding-bottom:38px;
+    display:flex;flex-direction:column;justify-content:center;min-height:46px;
+  }
+  .tl-item:last-child{padding-bottom:0;}
+  .tl-dot{
+    position:absolute;left:0;top:0;width:46px;height:46px;border-radius:50%;
+    background:color-mix(in srgb, var(--terracotta) 12%, var(--card));
+    border:1.5px solid var(--terracotta);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .tl-dot svg{width:24px;height:24px;stroke:var(--terracotta-deep);}
+  .tl-time{
+    font-family:"Cormorant Garamond",serif;color:var(--terracotta-deep);font-weight:600;font-size:1.1rem;
+  }
+  .tl-label{color:var(--ink-soft);margin-top:2px;}
+
+  /* ---------- cards / two-col ---------- */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:40px;}
+  @media (max-width:640px){.grid2{grid-template-columns:1fr;}}
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:6px;
+    padding:28px;
+    box-shadow:var(--shadow);
+  }
+  .card .icon{
+    width:40px;height:40px;border-radius:50%;
+    background:color-mix(in srgb, var(--olive) 16%, transparent);
+    display:flex;align-items:center;justify-content:center;margin-bottom:16px;
+  }
+  .card .icon svg{width:20px;height:20px;stroke:var(--olive-deep);}
+  .card h3{font-size:1.2rem;margin-bottom:8px;}
+  .card p{color:var(--ink-soft);margin:0 0 6px;}
+  .tag{
+    display:inline-block;margin-top:10px;
+    font-size:0.72rem;text-transform:uppercase;letter-spacing:0.06em;
+    color:var(--terracotta-deep);font-weight:700;
+    background:color-mix(in srgb, var(--terracotta) 14%, transparent);
+    padding:4px 10px;border-radius:999px;
+  }
+  a.tag{text-decoration:none;cursor:pointer;}
+  a.tag:hover{background:color-mix(in srgb, var(--terracotta) 26%, transparent);}
+  .tag-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+  .tag-row .tag{margin-top:0;}
+  .center{text-align:center;}
+  .section-head{text-align:center;max-width:560px;margin:0 auto 8px;}
+
+  /* ---------- rsvp ---------- */
+  .rsvp-box{
+    background:var(--card);border:1px solid var(--line);border-radius:6px;
+    padding:36px;margin-top:36px;box-shadow:var(--shadow);
+  }
+  .field{margin-bottom:18px;}
+  .field label{
+    display:block;font-weight:700;font-size:0.85rem;margin-bottom:6px;
+  }
+  .field .hint{color:var(--ink-soft);font-size:0.8rem;margin-top:4px;}
+  .field input[type="text"],
+  .field input[type="email"],
+  .field input[type="tel"],
+  .field input[type="number"],
+  .field textarea,
+  .field select{
+    width:100%;
+    padding:11px 13px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:var(--cream);
+    color:var(--ink);
+    font-family:"Mulish",sans-serif;
+    font-size:0.95rem;
+  }
+  .field textarea{resize:vertical;min-height:80px;}
+  .radiorow{display:flex;gap:10px;flex-wrap:wrap;}
+  .radiochip{
+    border:1px solid var(--line);border-radius:999px;padding:9px 16px;
+    cursor:pointer;font-size:0.88rem;background:var(--cream);
+  }
+  .radiochip input{margin-right:6px;}
+  .radiochip:has(input:checked){
+    background:var(--terracotta);border-color:var(--terracotta);color:#fff;
+  }
+  .rsvp-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px;}
+  .rsvp-note{margin-top:16px;font-size:0.82rem;color:var(--ink-soft);}
+  .deadline-pill{
+    display:inline-block;margin-top:18px;padding:8px 16px;border-radius:999px;
+    background:color-mix(in srgb, var(--olive) 16%, transparent);
+    color:var(--olive-deep);font-weight:700;font-size:0.82rem;
+  }
+
+  /* ---------- gifts ---------- */
+  .gift-card{
+    max-width:480px;margin:32px auto 0;text-align:center;
+    background:var(--card);border:1px dashed var(--line);border-radius:6px;
+    padding:32px;
+  }
+
+  .bank{
+    margin-top:16px;padding:4px 10px;text-align:center;
+  }
+  .bank span{display:block;margin-top:2px;}
+  .bank-label{
+    font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--terracotta-deep);font-weight:700;
+  }
+  .bank-iban{
+    font-size:0.75rem;font-weight:400;letter-spacing:0.04em;
+    color:var(--ink);user-select:all;-webkit-user-select:all;word-break:break-word;
+  }
+  .bank-name{font-size:0.75rem;color:var(--ink-soft);}
+
+  /* ---------- playlist ---------- */
+  .playlist-form{
+    display:flex;gap:10px;flex-wrap:wrap;margin-top:30px;max-width:560px;margin-inline:auto;
+  }
+  .playlist-form input{flex:1;min-width:180px;}
+  .playlist-link{
+    display:block;text-align:center;margin-top:18px;color:var(--ink-soft);font-size:0.88rem;
+  }
+
+  /* ---------- todo (tourism) ---------- */
+  .photo-box{width:100%;overflow:hidden;background:var(--cream-2);}
+  .photo-box img{width:100%;height:100%;object-fit:cover;display:block;}
+  .photo-box.wide{aspect-ratio:21/9;border-radius:4px;}
+  .photo-box.card-photo{aspect-ratio:16/10;}
+  .credit{display:block;font-size:0.68rem;color:var(--ink-soft);opacity:.7;margin-top:8px;letter-spacing:.02em;}
+  .place-card{
+    background:var(--card);border:1px solid var(--line);border-radius:6px;
+    padding:0;margin-top:24px;overflow:hidden;box-shadow:var(--shadow);
+  }
+  .place-body{padding:22px 26px 26px;}
+  .place-card h3{font-size:1.3rem;margin-bottom:4px;}
+  .place-card .dist{color:var(--terracotta-deep);font-weight:700;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;}
+  .place-card p{color:var(--ink-soft);margin-top:10px;}
+  .food-card{
+    background:var(--card);border:1px solid var(--line);border-radius:6px;
+    padding:24px;
+  }
+  .food-card h3{font-size:1.1rem;margin-bottom:8px;}
+  .food-card p{color:var(--ink-soft);}
+  .chip-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;justify-content:center;}
+  .chip{
+    background:var(--cream-2);border:1px solid var(--line);border-radius:999px;
+    padding:6px 14px;font-size:0.8rem;color:var(--ink-soft);white-space:nowrap;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    text-align:center;padding-block:70px 70px;font-size:0.88rem;
+    position:relative;overflow:hidden;
+    color:#F1E6D2;
+    border-radius:4px;margin-bottom:24px;
+  }
+  .footer-photo{position:absolute;inset:0;z-index:0;}
+  .footer-photo img{width:100%;height:100%;object-fit:cover;object-position:50% 50%;display:block;}
+  .footer-photo::after{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(195deg, rgba(18,20,10,0.4) 0%, rgba(18,20,10,0.62) 55%, rgba(18,20,10,0.85) 100%);
+  }
+  footer > *{position:relative;z-index:1;}
+  footer .fbrand{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:1.4rem;color:#fff;margin-bottom:14px;}
+  footer .contacts{display:flex;justify-content:center;gap:26px;flex-wrap:wrap;margin-top:14px;}
+  footer a{color:#F1E6D2;}
+
+  /* reveal on scroll */
+  .reveal{opacity:1;transform:none;}
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease, transform .6s ease;}
+    .reveal.in{opacity:1;transform:none;}
+  }
+
+  [data-lang-only]{display:none;}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="navbar">
+    <div class="brand">M <span style="color:var(--terracotta)">&amp;</span> F</div>
+    <div class="navactions" style="display:flex;align-items:center;gap:10px;">
+      <div class="langbar" id="langbar">
+        <button class="langbtn" data-lang="es">ES</button>
+        <button class="langbtn" data-lang="en">EN</button>
+        <button class="langbtn" data-lang="de">DE</button>
+      </div>
+      <button class="indexBtn" id="searchBtn" type="button" aria-label="Search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      </button>
+      <button class="indexBtn" id="indexBtn" type="button" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="index-overlay" id="searchOverlay">
+  <div class="index-panel search-panel" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="index-head">
+      <button class="index-close" id="searchClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="search-box">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+      <input type="text" id="searchInput" data-i18n-placeholder="search.placeholder" autocomplete="off">
+    </div>
+    <p class="search-status" id="searchStatus"></p>
+  </div>
+</div>
+
+<div class="index-overlay" id="indexOverlay">
+  <div class="index-panel" role="dialog" aria-modal="true" aria-label="Menu">
+    <div class="index-head">
+      <button class="index-close" id="indexClose" aria-label="Close">&times;</button>
+    </div>
+    <div class="index-grid">
+      <a href="#historia" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.story"></span>
+      </a>
+      <a href="#horario" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.schedule"></span>
+      </a>
+      <a href="#lugar" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.location"></span>
+      </a>
+      <a href="#vestimenta" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l-3 3 1 4-5 10h14l-5-10 1-4z"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.dresscode"></span>
+      </a>
+      <a href="#llegar" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16v-2.5L13 8V4a1.5 1.5 0 00-3 0v4l-8 5.5V16l8-2.5V18l-2 1.5V21l4-1 4 1v-1.5L14 18v-4.5z"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.getting_there"></span>
+      </a>
+      <a href="#alojamiento" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V9l9-6 9 6v12M3 21h18M9 21v-6h6v6"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.stay"></span>
+      </a>
+      <a href="#rsvp" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.5 2.5 5-5.5"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.rsvp"></span>
+      </a>
+      <a href="#regalos" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v9H4v-9 M2 7h20v5H2z M12 22V7 M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.gifts"></span>
+      </a>
+      <a href="#turismo" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M15.5 8.5l-2 5-5 2 2-5z"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.todo"></span>
+      </a>
+      <a href="#playlist" class="index-card">
+        <span class="index-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zM21 16a3 3 0 11-6 0 3 3 0 016 0z"/></svg></span>
+        <span class="index-card-title" data-i18n="nav.playlist"></span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<main class="wrap">
+
+  <!-- HERO -->
+  <section class="hero-photo">
+    <img src="couple-sunny.jpg" alt="Marta y Flo">
+    <div class="hero-photo-scrim"></div>
+    <div class="hero-photo-text">
+      <h1><span data-i18n="hero.marta">Marta</span> <span class="amp">&amp;</span> <span data-i18n="hero.flo">Flo</span></h1>
+      <p class="tagline" data-i18n="hero.tagline"></p>
+    </div>
+  </section>
+
+  <section class="hero-info">
+    <div class="place"><span class="venue-name" data-i18n="hero.place"></span></div>
+    <div class="datebig" data-i18n="hero.date"></div>
+
+    <div class="countdown" id="countdown">
+      <div><b id="cd-days">–</b><small data-i18n="hero.days"></small></div>
+      <div><b id="cd-hours">–</b><small data-i18n="hero.hours"></small></div>
+      <div><b id="cd-min">–</b><small data-i18n="hero.min"></small></div>
+      <div><b id="cd-sec">–</b><small data-i18n="hero.sec"></small></div>
+    </div>
+
+    <div class="cta-row">
+      <a href="#rsvp" class="btn btn-primary" data-i18n="hero.cta_rsvp"></a>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 0 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- STORY -->
+  <section id="historia" class="story reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="story.eyebrow"></span>
+      <h2 data-i18n="story.title"></h2>
+    </div>
+    <p data-i18n="story.body1"></p>
+    <p data-i18n="story.body2"></p>
+    <p data-i18n="story.body3"></p>
+
+    <div class="gallery">
+      <div class="gallery-track" id="galleryTrack">
+        <figure class="gallery-item">
+          <div class="gallery-photo"><img src="colonia.jpg" alt="Marta y Flo en Colonia"></div>
+          <figcaption class="gallery-caption" data-i18n="gallery.colonia"></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <div class="gallery-photo"><img src="couple-travel.jpg" alt="Marta y Flo en Oporto"></div>
+          <figcaption class="gallery-caption" data-i18n="gallery.oporto"></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <div class="gallery-photo"><img src="dublin.jpg" alt="Marta y Flo en Dublín"></div>
+          <figcaption class="gallery-caption" data-i18n="gallery.dublin"></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <div class="gallery-photo"><img src="hamburgo.jpg" alt="Marta y Flo en Hamburgo" style="object-position:50% 15%;"></div>
+          <figcaption class="gallery-caption" data-i18n="gallery.hamburgo"></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <div class="gallery-photo"><img src="turquia.jpg" alt="Marta y Flo en Turquía"></div>
+          <figcaption class="gallery-caption" data-i18n="gallery.turquia"></figcaption>
+        </figure>
+        <figure class="gallery-item">
+          <div class="gallery-photo"><img src="praga.jpg" alt="Marta y Flo en Praga"></div>
+          <figcaption class="gallery-caption" data-i18n="gallery.praga"></figcaption>
+        </figure>
+      </div>
+      <p class="gallery-hint" data-i18n="story.gallery_hint"></p>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 24 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- SCHEDULE -->
+  <section id="horario" class="reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="schedule.eyebrow"></span>
+      <h2 data-i18n="schedule.title"></h2>
+    </div>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V7a2 2 0 012-2h12a2 2 0 012 2v9M4 16a2 2 0 002 2h.5M4 16h16m0 0a2 2 0 01-2 2h-.5M7.5 18a1.5 1.5 0 11-3 0m14 0a1.5 1.5 0 11-3 0"/></svg></div>
+        <div class="tl-time">12:00</div>
+        <div class="tl-label" data-i18n="schedule.bus_pickup"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14l-7 9z M12 13v7 M8.5 20h7"/></svg></div>
+        <div class="tl-time">13:00</div>
+        <div class="tl-label" data-i18n="schedule.arrival"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="9" cy="14.5" r="5"/><circle cx="15" cy="9.5" r="5"/></svg></div>
+        <div class="tl-time">13:30</div>
+        <div class="tl-label" data-i18n="schedule.ceremony"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2 M7 2v20 M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg></div>
+        <div class="tl-time">14:00</div>
+        <div class="tl-label" data-i18n="schedule.lunch"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13M9 18a3 3 0 11-6 0 3 3 0 016 0zM21 16a3 3 0 11-6 0 3 3 0 016 0z"/></svg></div>
+        <div class="tl-time">18:00</div>
+        <div class="tl-label" data-i18n="schedule.party"></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16V7a2 2 0 012-2h12a2 2 0 012 2v9M4 16a2 2 0 002 2h.5M4 16h16m0 0a2 2 0 01-2 2h-.5M7.5 18a1.5 1.5 0 11-3 0m14 0a1.5 1.5 0 11-3 0"/></svg></div>
+        <div class="tl-time">00:00</div>
+        <div class="tl-label" data-i18n="schedule.bus_return"></div>
+      </div>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 0 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- LOCATION + GETTING THERE + ACCOMMODATION -->
+  <section id="lugar" class="reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="location.eyebrow"></span>
+      <h2 data-i18n="location.title"></h2>
+    </div>
+    <div class="card center" style="max-width:480px;margin:32px auto 0;overflow:hidden;padding:0;">
+      <div class="photo-box card-photo"><img src="venue.webp" alt="La Casa de la Tía Julita — jardín de la ceremonia" loading="lazy"></div>
+      <div style="padding:28px;">
+        <div class="icon" style="margin-inline:auto;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M12 21s-7-6.2-7-11a7 7 0 0114 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+        <h3><span class="venue-name" data-i18n="location.venue"></span></h3>
+        <p data-i18n="location.address"></p>
+        <div class="tag-row" style="justify-content:center;">
+          <p class="tag" data-i18n="location.note"></p>
+          <a href="https://www.google.com/maps/search/?api=1&query=Casa+de+la+Tia+Julita+Ru%C3%A1+Rodr%C3%ADguez+Castelao+10+Ares+A+Coru%C3%B1a" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 24 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <section id="vestimenta" class="tight reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="dresscode.eyebrow"></span>
+      <h2 data-i18n="dresscode.title"></h2>
+    </div>
+    <div class="card center" style="max-width:480px;margin:32px auto 0;">
+      <div class="icon" style="margin-inline:auto;"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l-3 3 1 4-5 10h14l-5-10 1-4z"/></svg></div>
+      <p data-i18n="dresscode.body"></p>
+      <p style="margin-top:10px;" data-i18n="dresscode.color_note"></p>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 24 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <section id="llegar" class="tight reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="transport.eyebrow"></span>
+      <h2 data-i18n="transport.title"></h2>
+    </div>
+    <div class="grid2">
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M4 16V7a2 2 0 012-2h12a2 2 0 012 2v9M4 16a2 2 0 002 2h.5M4 16h16m0 0a2 2 0 01-2 2h-.5M7.5 18a1.5 1.5 0 11-3 0m14 0a1.5 1.5 0 11-3 0"/></svg></div>
+        <h3 data-i18n="transport.bus_title"></h3>
+        <p data-i18n="transport.bus_out"></p>
+        <p data-i18n="transport.bus_back"></p>
+        <span class="tag" data-i18n="transport.bus_note"></span>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 12l2-6h14l2 6M5 12h14v6H5zM7 18v2M17 18v2"/></svg></div>
+        <h3 data-i18n="transport.car_title"></h3>
+        <p data-i18n="transport.car_body"></p>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:56px;">
+      <span class="eyebrow" data-i18n="airports.eyebrow"></span>
+      <h2 data-i18n="airports.title"></h2>
+      <p style="color:var(--ink-soft);margin-top:10px;" data-i18n="airports.intro"></p>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 16v-2.5L13 8V4a1.5 1.5 0 00-3 0v4l-8 5.5V16l8-2.5V18l-2 1.5V21l4-1 4 1v-1.5L14 18v-4.5z"/></svg></div>
+        <h3>A Coruña <span style="color:var(--ink-soft);font-weight:400;">(LCG)</span></h3>
+        <p data-i18n="airports.lcg_body"></p>
+        <p data-i18n="airports.lcg_body2"></p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 16v-2.5L13 8V4a1.5 1.5 0 00-3 0v4l-8 5.5V16l8-2.5V18l-2 1.5V21l4-1 4 1v-1.5L14 18v-4.5z"/></svg></div>
+        <h3>Santiago de Compostela <span style="color:var(--ink-soft);font-weight:400;">(SCQ)</span></h3>
+        <p data-i18n="airports.scq_body"></p>
+        <p data-i18n="airports.scq_body2"></p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 16v-2.5L13 8V4a1.5 1.5 0 00-3 0v4l-8 5.5V16l8-2.5V18l-2 1.5V21l4-1 4 1v-1.5L14 18v-4.5z"/></svg></div>
+        <h3><span data-i18n="airports.opo_title"></span> <span style="color:var(--ink-soft);font-weight:400;">(OPO)</span></h3>
+        <p data-i18n="airports.opo_body"></p>
+      </div>
+      <div class="card">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M21 16v-2.5L13 8V4a1.5 1.5 0 00-3 0v4l-8 5.5V16l8-2.5V18l-2 1.5V21l4-1 4 1v-1.5L14 18v-4.5z"/></svg></div>
+        <h3>Asturias <span style="color:var(--ink-soft);font-weight:400;">(OVD)</span></h3>
+        <p data-i18n="airports.ovd_body"></p>
+      </div>
+    </div>
+    <p style="color:var(--ink-soft);margin-top:22px;font-size:0.92rem;" data-i18n="airports.note"></p>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 0 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <section id="alojamiento" class="tight reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="stay.eyebrow"></span>
+      <h2 data-i18n="stay.title"></h2>
+    </div>
+    <div class="card center" style="max-width:480px;margin:32px auto 0;">
+      <div class="icon" style="margin-inline:auto;"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 21V9l9-6 9 6v12M3 21h18M9 21v-6h6v6"/></svg></div>
+      <p data-i18n="stay.body"></p>
+      <p data-i18n="stay.discount_info" style="margin-top:10px;"></p>
+      <p data-i18n-html="stay.important" style="margin-top:10px;"></p>
+      <div class="tag-row" style="justify-content:center;">
+        <a href="https://www.riazorhotel.com/en/" target="_blank" rel="noopener" class="tag" data-i18n="stay.link_label"></a>
+        <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Riazor+A+Coru%C3%B1a" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        <span class="tag" data-i18n="stay.discount"></span>
+      </div>
+      <p data-i18n="stay.note" style="color:var(--ink-soft);margin-top:16px;font-size:0.82rem;"></p>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 24 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- RSVP -->
+  <section id="rsvp" class="reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="rsvp.eyebrow"></span>
+      <h2 data-i18n="rsvp.title"></h2>
+      <p style="color:var(--ink-soft);margin-top:10px;" data-i18n="rsvp.intro"></p>
+      <span class="deadline-pill" data-i18n="rsvp.deadline"></span>
+    </div>
+
+    <form class="rsvp-box" id="rsvpForm">
+      <div class="field">
+        <label for="r-count" data-i18n="rsvp.count"></label>
+        <input type="number" id="r-count" min="1" max="10" value="1">
+      </div>
+      <div class="field">
+        <label for="r-name" data-i18n="rsvp.name"></label>
+        <textarea id="r-name" rows="2" required></textarea>
+        <div class="hint" data-i18n="rsvp.name_hint"></div>
+      </div>
+      <div class="field">
+        <label for="r-contact" data-i18n="rsvp.contact"></label>
+        <input type="tel" id="r-contact" required>
+      </div>
+
+      <div class="field">
+        <label data-i18n="rsvp.attending"></label>
+        <div class="radiorow">
+          <label class="radiochip"><input type="radio" name="attending" value="yes" checked> <span data-i18n="rsvp.yes"></span></label>
+          <label class="radiochip"><input type="radio" name="attending" value="no"> <span data-i18n="rsvp.no"></span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="r-allergies" data-i18n="rsvp.allergies"></label>
+        <textarea id="r-allergies"></textarea>
+      </div>
+
+      <div class="field">
+        <label data-i18n="rsvp.bus"></label>
+        <div class="radiorow">
+          <label class="radiochip"><input type="radio" name="bus" value="both" checked> <span data-i18n="rsvp.bus_both"></span></label>
+          <label class="radiochip"><input type="radio" name="bus" value="out"> <span data-i18n="rsvp.bus_out_only"></span></label>
+          <label class="radiochip"><input type="radio" name="bus" value="back"> <span data-i18n="rsvp.bus_back_only"></span></label>
+          <label class="radiochip"><input type="radio" name="bus" value="none"> <span data-i18n="rsvp.bus_none"></span></label>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="r-msg" data-i18n="rsvp.message"></label>
+        <textarea id="r-msg"></textarea>
+      </div>
+
+      <div class="rsvp-actions">
+        <a class="btn btn-primary" id="rsvpWaBtn" href="https://wa.me/34661176937" target="_blank" rel="noopener" data-i18n="rsvp.send_wa"></a>
+      </div>
+      <p class="rsvp-note" data-i18n="rsvp.note"></p>
+    </form>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 0 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- GIFTS -->
+  <section id="regalos" class="tight reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="gifts.eyebrow"></span>
+      <h2 data-i18n="gifts.title"></h2>
+    </div>
+    <div class="gift-card">
+      <p data-i18n="gifts.body"></p>
+      <p data-i18n="gifts.body3" data-lang-only="es de en" style="margin-top:10px;"></p>
+      <div class="bank">
+        <span class="bank-label" data-i18n="gifts.bank_label"></span>
+        <span class="bank-iban">DE64 3101 0833 9912 5972 91</span>
+        <span class="bank-iban" data-lang-only="es en">BIC: SCFBDE33XXX</span>
+        <span class="bank-name" data-i18n="gifts.holder"></span>
+      </div>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 0 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- THINGS TO DO (EN/DE only) -->
+  <section id="turismo" class="reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="todo.eyebrow"></span>
+      <h2 data-i18n="todo.title"></h2>
+      <p style="color:var(--ink-soft);margin-top:10px;" data-i18n="todo.intro"></p>
+    </div>
+
+    <div class="place-card" style="margin-top:30px;">
+      <div class="photo-box card-photo"><img src="sanxoan.jpg" alt="Hogueras de San Xoán en la playa" loading="lazy"></div>
+      <div class="place-body">
+        <span class="dist" data-i18n="todo.sanxoan_dist"></span>
+        <h3 data-i18n="todo.sanxoan_title"></h3>
+        <p data-i18n="todo.sanxoan_body"></p>
+        <p data-i18n="todo.sanxoan_myths"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=Praia+do+Orz%C3%A1n+A+Coru%C3%B1a" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+        <span class="credit" data-i18n="todo.sanxoan_credit"></span>
+      </div>
+    </div>
+
+    <div class="place-card">
+      <div class="photo-box card-photo"><img src="torre-hercules.jpg" alt="Torre de Hércules, A Coruña" loading="lazy"></div>
+      <div class="place-body">
+        <span class="dist" data-i18n="todo.coruna_dist"></span>
+        <h3 data-i18n="todo.coruna_title"></h3>
+        <p data-i18n="todo.coruna_body"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=Torre+de+H%C3%A9rcules+A+Coru%C3%B1a" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+        <span class="credit" data-i18n="todo.coruna_credit"></span>
+      </div>
+    </div>
+
+    <div class="place-card">
+      <div class="photo-box card-photo"><img src="santiago-cathedral.jpg" alt="Catedral de Santiago de Compostela" loading="lazy" style="object-fit:contain;"></div>
+      <div class="place-body">
+        <span class="dist" data-i18n="todo.santiago_dist"></span>
+        <h3 data-i18n="todo.santiago_title"></h3>
+        <p data-i18n="todo.santiago_body"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=Catedral+de+Santiago+de+Compostela" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+        <span class="credit" data-i18n="todo.santiago_credit"></span>
+      </div>
+    </div>
+
+    <div class="place-card">
+      <div class="photo-box card-photo"><img src="fisterra.jpg" alt="Faro de Fisterra" loading="lazy"></div>
+      <div class="place-body">
+        <span class="dist" data-i18n="todo.fisterra_dist"></span>
+        <h3 data-i18n="todo.fisterra_title"></h3>
+        <p data-i18n="todo.fisterra_body"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=Faro+de+Fisterra" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>      </div>
+    </div>
+
+    <div class="place-card">
+      <div class="photo-box card-photo"><img src="catedrais.jpg" alt="Praia das Catedrais" loading="lazy"></div>
+      <div class="place-body">
+        <span class="dist" data-i18n="todo.catedrais_dist"></span>
+        <h3 data-i18n="todo.catedrais_title"></h3>
+        <p data-i18n="todo.catedrais_body"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=Praia+das+Catedrais+Ribadeo" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+        <span class="credit" data-i18n="todo.catedrais_credit"></span>
+      </div>
+    </div>
+
+    <div class="section-head" style="margin-top:60px;">
+      <span class="eyebrow" data-i18n="food.eyebrow"></span>
+      <h2 data-i18n="food.title"></h2>
+      <p style="color:var(--ink-soft);margin-top:10px;" data-i18n="food.intro"></p>
+    </div>
+
+    <div class="grid2">
+      <div class="food-card">
+        <h3 data-i18n="food.penela_title"></h3>
+        <p data-i18n="food.penela_body"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=La+Penela+Plaza+de+Maria+Pita+12+A+Coru%C3%B1a" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+      </div>
+      <div class="food-card">
+        <h3 data-i18n="food.pulpeira_title"></h3>
+        <p data-i18n="food.pulpeira_body"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=A+Pulpeira+de+Melide+Praza+de+Espa%C3%B1a+16+A+Coru%C3%B1a" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+      </div>
+      <div class="food-card">
+        <h3 data-i18n="food.bombilla_title"></h3>
+        <p data-i18n="food.bombilla_body"></p>
+        <p style="color:var(--ink-soft);margin-top:8px;font-size:0.82rem;" data-i18n="food.bombilla_note"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=La+Bombilla+A+Coru%C3%B1a" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+      </div>
+      <div class="food-card">
+        <h3 data-i18n="food.estrella_title"></h3>
+        <p data-i18n="food.estrella_body"></p>
+        <div class="tag-row">
+          <a href="https://www.google.com/maps/search/?api=1&query=Cervecer%C3%ADa+Estrella+Galicia+Concepci%C3%B3n+Arenal+10+A+Coru%C3%B1a" target="_blank" rel="noopener" class="tag" data-i18n="common.maps_label"></a>
+        </div>
+      </div>
+    </div>
+
+    <p class="center" style="margin-top:30px;font-weight:700;" data-i18n="food.specialties_label"></p>
+    <div class="chip-row">
+      <span class="chip">Pulpo á feira</span>
+      <span class="chip" data-i18n="food.chip_empanada"></span>
+      <span class="chip" data-i18n="food.chip_percebes"></span>
+      <span class="chip">Tarta de Santiago</span>
+      <span class="chip" data-i18n="food.chip_albarino"></span>
+    </div>
+  </section>
+
+  <svg class="divider" viewBox="0 0 300 24" preserveAspectRatio="none"><path d="M0 12 Q 25 24 50 12 T 100 12 T 150 12 T 200 12 T 250 12 T 300 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+
+  <!-- PLAYLIST -->
+  <section id="playlist" class="tight reveal">
+    <div class="section-head">
+      <span class="eyebrow" data-i18n="playlist.eyebrow"></span>
+      <h2 data-i18n="playlist.title"></h2>
+      <p style="color:var(--ink-soft);margin-top:10px;" data-i18n="playlist.intro"></p>
+    </div>
+    <a href="https://open.spotify.com/playlist/2SJtbrvDXPhkKaGXcY657d" target="_blank" rel="noopener" class="btn btn-primary" style="display:flex;width:fit-content;margin:0 auto;text-decoration:none;">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.59 14.4a.62.62 0 01-.86.21c-2.35-1.44-5.31-1.76-8.8-.96a.62.62 0 11-.27-1.21c3.82-.87 7.1-.5 9.72 1.1.3.18.4.57.21.86zm1.22-2.72a.78.78 0 01-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 11-.45-1.49c3.63-1.1 8.14-.56 11.23 1.34.37.23.49.72.26 1.06zm.11-2.83C14.98 8.9 9.08 8.7 5.71 9.71a.93.93 0 11-.54-1.78c3.87-1.17 10.3-.94 14.36 1.46a.93.93 0 11-.95 1.6z"/></svg>
+      <span data-i18n="playlist.spotify_link"></span>
+    </a>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-photo"><img src="hands-bw.jpg" alt="Marta y Flo cogidos de la mano"></div>
+  <div class="fbrand">Marta &amp; Flo</div>
+  <div data-i18n="footer.thanks"></div>
+  <div class="contacts">
+    <a href="tel:+34661176937">Marta · +34 661 17 69 37</a>
+    <a href="tel:+4901722545541">Flo · +49 172 2545541</a>
+  </div>
+  <div style="margin-top:22px;opacity:.7;">26 · 06 · 2027 — A Coruña</div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var T = {
+    es: {
+      "nav.story":"Nuestra historia","nav.schedule":"Horario","nav.location":"Ubicación",
+      "nav.getting_there":"Cómo llegar","nav.stay":"Alojamiento recomendado","nav.dresscode":"Vestimenta","nav.rsvp":"Confirmar asistencia",
+      "nav.gifts":"Regalos","nav.todo":"Coruña y alrededores","nav.playlist":"Playlist",
+      "index.story_desc":"Cómo empezó todo entre España y Alemania",
+      "index.schedule_desc":"El plan del gran día, hora por hora",
+      "index.location_desc":"Dónde es la ceremonia y la fiesta",
+      "index.dresscode_desc":"Qué poneros para la boda",
+      "index.transport_desc":"Bus, coche y aeropuertos",
+      "index.stay_desc":"Dónde dormir en A Coruña",
+      "index.rsvp_desc":"Confirmad vuestra asistencia",
+      "index.gifts_desc":"Información sobre regalos",
+      "index.todo_desc":"Sitios que ver y dónde comer en Galicia",
+      "index.playlist_desc":"Añadid vuestra canción a la fiesta",
+      "search.placeholder":"Buscar en la web…",
+      "search.no_results":"Sin resultados",
+      "search.one_result":"1 resultado",
+      "search.results":"resultados",
+
+      "common.maps_label":"📍 Ver en mapa",
+
+      "hero.marta":"Marta","hero.flo":"Flo",
+      "hero.tagline":"¡Nos casamos y queremos celebrarlo con vosotros!",
+      "hero.place":"La Casa de la Tía Julita",
+      "hero.date":"26 de junio de 2027",
+      "hero.days":"días","hero.hours":"horas","hero.min":"min","hero.sec":"seg",
+      "hero.cta_rsvp":"Confirmar asistencia","hero.cta_schedule":"Ver el horario",
+
+      "story.eyebrow":"Cómo empezó todo",
+      "story.title":"Nuestra historia",
+      "story.gallery_hint":"Deslizad para ver más →",
+      "gallery.colonia":"Colonia, 2021",
+      "gallery.oporto":"Oporto, 2022",
+      "gallery.dublin":"Dublín, 2023",
+      "gallery.hamburgo":"Hamburgo, 2024 (Concierto de Taylor Swift!!!)",
+      "gallery.turquia":"Turquía, 2025",
+      "gallery.praga":"Praga, 2026",
+      "story.body1":"Todo empezó en un Brauhaus de Colonia: dos culturas, tres idiomas y mucho camino por recorrer juntos.",
+      "story.body2":"A día de hoy, Flo todavía se pregunta qué significa quedar «sobre las 8», y Marta no entiende cómo el café con tarta puede sustituir a una comida de verdad.",
+      "story.body3":"Pero entre el alemán, el español y el inglés hemos encontrado nuestro propio idioma, y ya no concebimos nuestra vida sin esta mezcla increíble.",
+
+      "schedule.eyebrow":"El gran día",
+      "schedule.title":"Horario",
+      "schedule.bus_pickup":"Recogida del bus en el Hotel Riazor",
+      "schedule.arrival":"Llegada y bienvenida",
+      "schedule.ceremony":"Ceremonia",
+      "schedule.lunch":"Comida",
+      "schedule.party":"Fiesta",
+      "schedule.bus_return":"Vuelta en bus al Hotel Riazor",
+
+      "location.eyebrow":"Dónde","location.title":"Ubicación",
+      "location.venue":"La Casa de la Tía Julita",
+      "location.address":"Rúa Rodríguez Castelao, 10, 15624 Ares, A Coruña.",
+      "location.note":"Ceremonia + comida + fiesta, todo en el mismo sitio",
+
+      "transport.eyebrow":"Logística","transport.title":"Cómo llegar",
+      "transport.bus_title":"Autobús desde A Coruña",
+      "transport.bus_out":"Ida: sale del Hotel Riazor a las 12:00",
+      "transport.bus_back":"Vuelta: sale a las 00:00 desde La Casa de la Tía Julita",
+      "transport.bus_note":"Un único bus de ida y uno de vuelta",
+      "transport.car_title":"En coche",
+      "transport.car_body":"Hay un aparcamiento gratuito justo enfrente del recinto.",
+
+      "stay.eyebrow":"Dónde dormir",
+      "stay.title":"Alojamiento recomendado",
+      "stay.body":"Recomendamos el Hotel Riazor, en A Coruña. Os aconsejamos reservar con antelación para que haya habitaciones disponibles.",
+      "stay.note":"Activo hasta el 12 de mayo de 2027.",
+      "stay.discount_info":"Hemos hablado con el hotel y nos han dado un código de descuento para todos los invitados de la boda.",
+      "stay.important":"<strong>¡Importante!</strong> Solo funciona reservando directamente en la web del hotel: introducidlo al elegir las fechas y luego escoged la habitación que queráis.",
+      "stay.link_label":"Ver hotel →",
+      "stay.discount":"Código para un 12% de descuento: MARTAYFLO",
+
+      "airports.eyebrow":"Para quienes vienen de fuera",
+      "airports.title":"Aeropuertos más cercanos",
+      "airports.intro":"Si venís de fuera, aquí tenéis las opciones para llegar a A Coruña en avión.",
+      "airports.scq_body":"A ~45 min de A Coruña. El aeropuerto mejor conectado de la zona, aunque desde la mayoría de sitios lo normal es hacer escala en Madrid o Barcelona.",
+      "airports.scq_body2":"Desde el aeropuerto hay que llegar hasta la estación Intermodal, en el centro de Santiago, y coger allí un tren o un bus hasta A Coruña (comprobad los horarios online). Aun así, recomendamos alquilar coche, ya que es más rápido.",
+      "airports.lcg_body":"A 15 min del centro. Se puede alquilar coche o coger un taxi (unos 20-25€ al centro).",
+      "airports.lcg_body2":"Es el más cercano, aunque con muy pocas rutas directas: desde la mayoría de sitios habrá que hacer escala.",
+      "airports.opo_title":"Oporto, Portugal",
+      "airports.opo_body":"A ~2,5–3 horas en coche. Suele volar Ryanair. Es necesario alquilar coche: hay pocos autobuses o trenes, y llegar a A Coruña en transporte público es complicado.",
+      "airports.ovd_body":"A ~2 horas. Suele volar Ryanair. También hay que alquilar coche, ya que es muy difícil llegar en transporte público.",
+      "airports.note":"Desde muchos destinos no hay vuelo directo a Galicia: lo normal es hacer escala en Madrid o Barcelona.",
+
+      "dresscode.eyebrow":"Qué poneros",
+      "dresscode.title":"Vestimenta: elegante",
+      "dresscode.body":"Buscamos un ambiente elegante, pero sin llegar a la etiqueta: nos gustaría ver cierta formalidad, aunque, por supuesto, la corbata no es obligatoria.",
+      "dresscode.color_note":"El único color que pedimos evitar es el blanco y los tonos marfil, reservados para la novia.",
+
+      "rsvp.eyebrow":"RSVP","rsvp.title":"Confirmar asistencia",
+      "rsvp.intro":"Rellenad el formulario y pulsad enviar: se abrirá WhatsApp con todo listo para mandarnos.",
+      "rsvp.deadline":"Confirmar antes del 26 de abril de 2027",
+      "rsvp.count":"¿Cuántos sois?",
+      "rsvp.name":"Nombre(s)",
+      "rsvp.name_hint":"Si venís en pareja o en grupo, escribid el nombre de todos",
+      "rsvp.contact":"Teléfono de contacto",
+      "rsvp.attending":"¿Asistiréis?",
+      "rsvp.yes":"Sí, allí estaremos","rsvp.no":"No podremos ir",
+      "rsvp.allergies":"Alergias o restricciones alimentarias (de todos los que venís)",
+      "rsvp.bus":"¿Necesitáis el bus desde A Coruña?",
+      "rsvp.bus_both":"Ida y vuelta","rsvp.bus_out_only":"Solo ida","rsvp.bus_back_only":"Solo vuelta","rsvp.bus_none":"No, gracias",
+      "rsvp.message":"Mensaje para los novios (opcional)",
+      "rsvp.send_wa":"Enviar por WhatsApp",
+      "rsvp.note":"Al pulsar, se abrirá WhatsApp con el mensaje ya escrito: solo tienes que darle a enviar.",
+
+      "gifts.eyebrow":"Detalles","gifts.title":"Regalos",
+      "gifts.body":"Vuestra presencia en nuestra boda ya es el mejor regalo que podríamos pedir. Agradecemos especialmente el tiempo y el esfuerzo de quienes venís de fuera para estar con nosotros.",
+      "gifts.body3":"Si además queréis tener un detalle para nuestra luna de miel y nuestra vida juntos, nos hará muchísima ilusión.",
+      "gifts.bank_label":"Cuenta bancaria (IBAN)",
+      "gifts.holder":"Marta Paz y Florian Weiland",
+
+      "playlist.eyebrow":"Música","playlist.title":"Ayudadnos con la playlist",
+      "playlist.intro":"Añadid vuestra canción favorita directamente a la playlist de Spotify: ¡es donde va a sonar todo en la fiesta!",
+      "playlist.spotify_link":"Añadir tu canción en Spotify",
+
+      "footer.thanks":"Gracias por ser parte de nuestro día. ¡Nos vemos en A Coruña!",
+
+      "todo.eyebrow":"Más allá de la boda",
+      "todo.title":"Qué ver por la zona",
+      "todo.intro":"¿Vais a aprovechar el viaje? Aquí tenéis algunos sitios de Galicia que merece la pena ver antes o después de la boda.",
+      "todo.coruna_dist":"En la propia ciudad",
+      "todo.coruna_title":"A Coruña",
+      "todo.coruna_body":"Aquí está la Torre de Hércules, el faro romano en funcionamiento más antiguo del mundo. Pasead por el Paseo Marítimo, relajaos en la playa de Riazor o de Orzán, y perdeos por la Ciudad Vieja alrededor de la Plaza de María Pita para tapear y comer pulpo.",
+      "todo.coruna_credit":"Foto: Manu Paz (el padre de Marta)",
+      "todo.catedrais_credit":"Foto: Manu Paz (el padre de Marta)",
+      "todo.santiago_dist":"A ~1 hora",
+      "todo.santiago_title":"Santiago de Compostela",
+      "todo.santiago_body":"El destino final del Camino de Santiago. Su catedral y la Praza do Obradoiro son parada obligatoria, y el casco antiguo con sus calles de piedra y el mercado de abastos merecen una tarde tranquila.",
+      "todo.fisterra_dist":"A ~1,5 horas",
+      "todo.fisterra_title":"Fisterra (Finisterre)",
+      "todo.fisterra_body":"Los romanos lo consideraban el fin del mundo conocido. Acantilados atlánticos impresionantes, un faro en la mismísima punta, y algunos de los mejores atardeceres de la Costa da Morte.",
+      "todo.catedrais_dist":"A ~1,5–2 horas",
+      "todo.catedrais_title":"Praia das Catedrais",
+      "todo.catedrais_body":"Una playa espectacular cerca de Ribadeo con arcos de roca natural esculpidos por la marea. Solo se puede visitar con marea baja, así que consultad las tablas de mareas antes de ir.",
+      "todo.sanxoan_dist":"23–24 de junio",
+      "todo.sanxoan_title":"Noite de San Xoán",
+      "todo.sanxoan_body":"En la noche del 23 al 24 de junio, A Coruña celebra una de las fiestas de San Juan más multitudinarias de Galicia: hogueras en las playas de Orzán y Riazor, sardinas asadas y fuegos artificiales hasta la madrugada. Si llegáis unos días antes de la boda, merece la pena vivirla.",
+      "todo.sanxoan_myths":"Es una noche cargada de tradición y mitología gallega: cae en torno al solsticio de verano, la noche más corta del año, y cuenta la leyenda que es cuando las meigas andan sueltas. Se salta el fuego para atraer buena suerte, se recogen las hierbas de San Xoán para protegerse durante el año y muchos se dan un baño de medianoche en el mar.",
+      "todo.sanxoan_credit":"Foto: Manu Paz (el padre de Marta)",
+      "todo.santiago_credit":"Foto: Manu Paz (el padre de Marta)",
+
+      "food.eyebrow":"Comer como un local",
+      "food.title":"Dónde comer en A Coruña",
+      "food.intro":"Cuatro clásicos de la ciudad, de los de toda la vida.",
+      "food.penela_title":"La Penela",
+      "food.penela_body":"En la Plaza de María Pita, frente al Ayuntamiento. Cocina gallega de siempre: marisco, pescado salvaje y la famosa tortilla de Betanzos.",
+      "food.pulpeira_title":"Pulpeira de Melide",
+      "food.pulpeira_body":"Cuatro generaciones de pulpeiros detrás de uno de los sitios de referencia para comer pulpo á feira en la ciudad. Ambiente animado, mejor reservar.",
+      "food.bombilla_title":"La Bombilla",
+      "food.bombilla_body":"Bar de pinchos con más de 85 años en la calle Torreiro. Tortilla, pinchos y croquetas en un ambiente sin pretensiones: un clásico coruñés.",
+      "food.estrella_title":"Cervecería Estrella Galicia",
+      "food.estrella_body":"En el edificio de la primera fábrica de Estrella Galicia (1906), en Cuatro Caminos. Comida gallega tradicional y la cerveza de la casa recién salida de la fuente.",
+      "food.specialties_label":"No os vayáis sin probar:",
+      "food.chip_empanada":"Empanada gallega",
+      "food.chip_percebes":"Percebes",
+      "food.chip_albarino":"Vino Albariño",
+      "food.bombilla_note":"La Bombilla no coge reservas: es de barra, así que id con margen si hay cola.",
+    },
+
+    en: {
+      "nav.story":"Our story","nav.schedule":"Schedule","nav.location":"Location",
+      "nav.getting_there":"Getting there","nav.stay":"Where to stay","nav.dresscode":"Dress code","nav.rsvp":"RSVP",
+      "nav.gifts":"Gifts","nav.todo":"Things to do","nav.playlist":"Playlist",
+      "index.story_desc":"How it all started between Spain and Germany",
+      "index.schedule_desc":"The plan for the big day, hour by hour",
+      "index.location_desc":"Where the ceremony and party are",
+      "index.dresscode_desc":"What to wear to the wedding",
+      "index.transport_desc":"Bus, car and airports",
+      "index.stay_desc":"Where to sleep in A Coruña",
+      "index.rsvp_desc":"Let us know if you're coming",
+      "index.gifts_desc":"About gifts",
+      "index.todo_desc":"Places to see and where to eat in Galicia",
+      "index.playlist_desc":"Add your song to the party",
+      "search.placeholder":"Search the site…",
+      "search.no_results":"No results",
+      "search.one_result":"1 result",
+      "search.results":"results",
+
+      "common.maps_label":"📍 View on map",
+
+      "hero.marta":"Marta","hero.flo":"Flo",
+      "hero.tagline":"We're getting married and we'd love for you to be there!",
+      "hero.place":"La Casa de la Tía Julita",
+      "hero.date":"June 26, 2027",
+      "hero.days":"days","hero.hours":"hours","hero.min":"min","hero.sec":"sec",
+      "hero.cta_rsvp":"RSVP now","hero.cta_schedule":"See the schedule",
+
+      "story.eyebrow":"How it started",
+      "story.title":"Our story",
+      "story.gallery_hint":"Swipe to see more →",
+      "gallery.colonia":"Cologne, 2021",
+      "gallery.oporto":"Porto, 2022",
+      "gallery.dublin":"Dublin, 2023",
+      "gallery.hamburgo":"Hamburg, 2024 (Taylor Swift concert!!!)",
+      "gallery.turquia":"Turkey, 2025",
+      "gallery.praga":"Prague, 2026",
+      "story.body1":"It all started at a Brauhaus in Cologne: two cultures, three languages, and plenty of room for memorable moments.",
+      "story.body2":"To this day Flo still wonders what meeting \"around 8\" means, and Marta can't understand how coffee and cake could ever substitute a proper meal.",
+      "story.body3":"But somewhere between German, Spanish and English, we found our own language — and we can't imagine our life without this incredible mix anymore.",
+
+      "schedule.eyebrow":"The big day",
+      "schedule.title":"Schedule",
+      "schedule.bus_pickup":"Bus pickup at Hotel Riazor",
+      "schedule.arrival":"Arrival & welcome",
+      "schedule.ceremony":"Ceremony",
+      "schedule.lunch":"Flying dinner",
+      "schedule.party":"Party",
+      "schedule.bus_return":"Bus back to Hotel Riazor",
+
+      "location.eyebrow":"Where","location.title":"Venue",
+      "location.venue":"La Casa de la Tía Julita",
+      "location.address":"Rúa Rodríguez Castelao, 10, 15624 Ares, A Coruña.",
+      "location.note":"Ceremony + flying dinner + party, all in one venue",
+
+      "transport.eyebrow":"Logistics","transport.title":"Getting there",
+      "transport.bus_title":"Bus from A Coruña",
+      "transport.bus_out":"Departure: leaves from Hotel Riazor at 12:00",
+      "transport.bus_back":"Return: leaves the venue at midnight (00:00)",
+      "transport.bus_note":"One bus each way",
+      "transport.car_title":"By car",
+      "transport.car_body":"There's free parking right in front of the venue.",
+
+      "stay.eyebrow":"Where to stay",
+      "stay.title":"Recommended stay",
+      "stay.body":"We recommend Hotel Riazor in A Coruña. We suggest booking early so that rooms are still available.",
+      "stay.note":"Valid until 12 May 2027.",
+      "stay.discount_info":"We spoke with the hotel and they've given us a discount code for all our wedding guests.",
+      "stay.important":"<strong>Important!</strong> It only works when booking directly on the hotel's website: enter it when you choose your dates, then pick any room you like.",
+      "stay.link_label":"Visit hotel →",
+      "stay.discount":"Code for 12% off: MARTAYFLO",
+
+      "airports.eyebrow":"For guests coming from abroad",
+      "airports.title":"Nearest airports",
+      "airports.intro":"If you're travelling from abroad, here are your options for reaching A Coruña by air.",
+      "airports.scq_body":"~45 min from A Coruña. The best-connected airport in the region, though from most places the usual route involves a layover in Madrid or Barcelona.",
+      "airports.scq_body2":"From the airport, you'll need to get to the Intermodal station in central Santiago and catch a train or bus to A Coruña from there (please check schedules online). We'd still recommend renting a car, as it's faster.",
+      "airports.lcg_body":"15 min from the city centre. You can rent a car or take a taxi (around €20-25 to the centre).",
+      "airports.lcg_body2":"The closest option, though with very few direct routes — from most places you'll need a layover.",
+      "airports.opo_title":"Porto, Portugal",
+      "airports.opo_body":"~2.5–3 hours by car. Usually flown by Ryanair. You'll need to rent a car — there are few buses or trains, and reaching A Coruña by public transport is tricky.",
+      "airports.ovd_body":"~2 hours away. Usually flown by Ryanair. You'll also need to rent a car, since public transport barely reaches the venue.",
+      "airports.note":"From many places there's no direct flight to Galicia — most routes connect through Madrid or Barcelona.",
+
+      "dresscode.eyebrow":"What to wear",
+      "dresscode.title":"Dress code: elegant",
+      "dresscode.body":"We're going for an elegant atmosphere, but nothing black-tie — we'd love a touch of formality, though a tie is of course not required.",
+      "dresscode.color_note":"The only colour we ask you to skip is white and ivory, reserved for the bride.",
+
+      "rsvp.eyebrow":"RSVP","rsvp.title":"Confirm your attendance",
+      "rsvp.intro":"Fill in the form and hit send: WhatsApp will open with everything ready to go.",
+      "rsvp.deadline":"Please confirm by April 26, 2027",
+      "rsvp.count":"How many of you?",
+      "rsvp.name":"Name(s)",
+      "rsvp.name_hint":"If you're coming as a couple or group, list everyone's name",
+      "rsvp.contact":"Phone number",
+      "rsvp.attending":"Will you be attending?",
+      "rsvp.yes":"Yes, we'll be there","rsvp.no":"Sorry, can't make it",
+      "rsvp.allergies":"Allergies or dietary restrictions (for everyone coming)",
+      "rsvp.bus":"Will you need the bus from A Coruña?",
+      "rsvp.bus_both":"Both ways","rsvp.bus_out_only":"Outbound only","rsvp.bus_back_only":"Return only","rsvp.bus_none":"No, thanks",
+      "rsvp.message":"Message for the couple (optional)",
+      "rsvp.send_wa":"Send by WhatsApp",
+      "rsvp.note":"This opens WhatsApp with the message already written — just hit send.",
+
+      "gifts.eyebrow":"Details","gifts.title":"Gifts",
+      "gifts.body":"Having you there with us is the greatest gift we could wish for. Especially for those of you travelling, we truly appreciate the time and effort you are making to be part of our day.",
+      "gifts.body3":"If you'd also like to give us a little something towards our honeymoon and future life together, it would mean a lot to us.",
+      "gifts.bank_label":"Bank account (IBAN)",
+      "gifts.holder":"Marta Paz and Florian Weiland",
+
+      "playlist.eyebrow":"Music","playlist.title":"Help us build the playlist",
+      "playlist.intro":"Add your favourite song straight to the Spotify playlist — it's what will be playing at the party!",
+      "playlist.spotify_link":"Add your song on Spotify",
+
+      "footer.thanks":"Thank you for being part of our day — see you in A Coruña!",
+
+      "todo.eyebrow":"Beyond the wedding","todo.title":"Things to do nearby",
+      "todo.intro":"Making a trip out of it? Here are a few places around Galicia worth exploring before or after the wedding.",
+      "todo.coruna_dist":"In town",
+      "todo.coruna_title":"A Coruña",
+      "todo.coruna_body":"Home to the Tower of Hercules, the oldest Roman lighthouse still in use — walk the seafront promenade, relax on Riazor or Orzán beach, and wander the old town around Plaza de María Pita for tapas and pulpo.",
+      "todo.coruna_credit":"Photo: Manu Paz (Marta's dad)",
+      "todo.catedrais_credit":"Photo: Manu Paz (Marta's dad)",
+      "todo.santiago_dist":"~1 hour away",
+      "todo.santiago_title":"Santiago de Compostela",
+      "todo.santiago_body":"The final destination of the Camino de Santiago pilgrimage. Its cathedral and the Praza do Obradoiro are unmissable, and the old town's stone streets and covered market are worth a slow afternoon.",
+      "todo.fisterra_dist":"~1.5 hours away",
+      "todo.fisterra_title":"Fisterra (Finisterre)",
+      "todo.fisterra_body":"Once believed by the Romans to be the end of the known world. Dramatic Atlantic cliffs, a lighthouse at the very tip, and some of the best sunsets on the Costa da Morte.",
+      "todo.catedrais_dist":"~1.5–2 hours away",
+      "todo.catedrais_title":"Praia das Catedrais",
+      "todo.catedrais_body":"A striking beach near Ribadeo with natural rock arches carved by the tide. Only accessible at low tide, so check the tide times before you go.",
+      "todo.sanxoan_dist":"23–24 June",
+      "todo.sanxoan_title":"Noite de San Xoán (St. John's Eve)",
+      "todo.sanxoan_body":"On the night of 23–24 June, A Coruña holds one of Galicia's biggest St. John's Eve celebrations: bonfires on Orzán and Riazor beach, grilled sardines, and fireworks into the early hours. If you're arriving a few days before the wedding, it's worth experiencing.",
+      "todo.sanxoan_myths":"It's a night steeped in Galician folklore: it falls around the summer solstice, the shortest night of the year, and legend has it this is when the meigas — Galician witches — are out and about. People jump over the flames for good luck, gather St. John's herbs for protection through the year, and many take a midnight swim in the sea.",
+      "todo.sanxoan_credit":"Photo: Manu Paz (Marta's dad)",
+      "todo.santiago_credit":"Photo: Manu Paz (Marta's dad)",
+
+      "food.eyebrow":"Eat like a local",
+      "food.title":"Where to eat in A Coruña",
+      "food.intro":"Four local classics, the kind everyone in town knows.",
+      "food.penela_title":"La Penela",
+      "food.penela_body":"On Plaza de María Pita, right across from the town hall. Classic Galician cooking — shellfish, wild fish, and the famous Betanzos-style tortilla.",
+      "food.pulpeira_title":"Pulpeira de Melide",
+      "food.pulpeira_body":"Four generations of pulpeiros behind one of the city's go-to spots for pulpo á feira. Lively and busy — book ahead if you can.",
+      "food.bombilla_title":"La Bombilla",
+      "food.bombilla_body":"A tapas bar on Calle Torreiro running since 1937. Tortilla, pinchos and croquettes in a no-frills setting — a true Coruña institution.",
+      "food.estrella_title":"Cervecería Estrella Galicia",
+      "food.estrella_body":"Housed in the building of Estrella Galicia's original 1906 brewery, in the Cuatro Caminos neighborhood. Traditional Galician food and the local beer, straight from the source.",
+      "food.specialties_label":"Don't leave without trying:",
+      "food.chip_empanada":"Empanada gallega",
+      "food.chip_percebes":"Percebes (goose barnacles)",
+      "food.chip_albarino":"Albariño wine",
+      "food.bombilla_note":"La Bombilla doesn't take reservations — it's bar-only, so allow extra time if there's a queue.",
+    },
+
+    de: {
+      "nav.story":"Unsere Geschichte","nav.schedule":"Zeitplan","nav.location":"Ort",
+      "nav.getting_there":"Anreise","nav.stay":"Unterkunft","nav.dresscode":"Dresscode","nav.rsvp":"Zusagen",
+      "nav.gifts":"Geschenke","nav.todo":"Sehenswürdigkeiten","nav.playlist":"Playlist",
+      "index.story_desc":"Wie alles zwischen Spanien und Deutschland begann",
+      "index.schedule_desc":"Der Ablauf des großen Tages, Stunde für Stunde",
+      "index.location_desc":"Wo Trauung und Party stattfinden",
+      "index.dresscode_desc":"Was ihr zur Hochzeit anziehen könnt",
+      "index.transport_desc":"Bus, Auto und Flughäfen",
+      "index.stay_desc":"Wo ihr in A Coruña übernachten könnt",
+      "index.rsvp_desc":"Sagt uns Bescheid, ob ihr kommt",
+      "index.gifts_desc":"Infos zu Geschenken",
+      "index.todo_desc":"Sehenswürdigkeiten und Restaurants in Galicien",
+      "index.playlist_desc":"Fügt euren Song zur Party hinzu",
+      "search.placeholder":"Website durchsuchen…",
+      "search.no_results":"Keine Ergebnisse",
+      "search.one_result":"1 Ergebnis",
+      "search.results":"Ergebnisse",
+
+      "common.maps_label":"📍 Auf Karte ansehen",
+
+      "hero.marta":"Marta","hero.flo":"Flo",
+      "hero.tagline":"Wir heiraten und würden uns riesig freuen, wenn ihr dabei seid!",
+      "hero.place":"La Casa de la Tía Julita",
+      "hero.date":"26. Juni 2027",
+      "hero.days":"Tage","hero.hours":"Std","hero.min":"Min","hero.sec":"Sek",
+      "hero.cta_rsvp":"Jetzt zusagen","hero.cta_schedule":"Zum Zeitplan",
+
+      "story.eyebrow":"Wie alles begann",
+      "story.title":"Unsere Geschichte",
+      "story.gallery_hint":"Wischen für mehr →",
+      "gallery.colonia":"Köln, 2021",
+      "gallery.oporto":"Porto, 2022",
+      "gallery.dublin":"Dublin, 2023",
+      "gallery.hamburgo":"Hamburg, 2024 (Taylor-Swift-Konzert!!!)",
+      "gallery.turquia":"Türkei, 2025",
+      "gallery.praga":"Prag, 2026",
+      "story.body1":"Alles begann in einem Brauhaus in Köln: zwei Kulturen, drei Sprachen und jede Menge Raum für unvergessliche Momente.",
+      "story.body2":"Bis heute fragt sich Flo, was ein Treffen „so gegen 8“ eigentlich bedeutet, und Marta versteht nicht, wie Kaffee und Kuchen eine richtige Mahlzeit ersetzen sollen.",
+      "story.body3":"Doch irgendwo zwischen Deutsch, Spanisch und Englisch haben wir unsere eigene Sprache gefunden — und können uns unser Leben ohne diese unglaubliche Mischung nicht mehr vorstellen.",
+
+      "schedule.eyebrow":"Der große Tag",
+      "schedule.title":"Zeitplan",
+      "schedule.bus_pickup":"Busabfahrt am Hotel Riazor",
+      "schedule.arrival":"Ankunft und Empfang",
+      "schedule.ceremony":"Trauung",
+      "schedule.lunch":"Flying Dinner",
+      "schedule.party":"Party",
+      "schedule.bus_return":"Busrückfahrt zum Hotel Riazor",
+
+      "location.eyebrow":"Wo","location.title":"Location",
+      "location.venue":"La Casa de la Tía Julita",
+      "location.address":"Rúa Rodríguez Castelao, 10, 15624 Ares, A Coruña.",
+      "location.note":"Trauung + Flying Dinner + Party, alles an einem Ort",
+
+      "transport.eyebrow":"Organisatorisches","transport.title":"Anreise",
+      "transport.bus_title":"Bus ab A Coruña",
+      "transport.bus_out":"Hinfahrt: Abfahrt am Hotel Riazor um 12:00",
+      "transport.bus_back":"Rückfahrt: startet um Mitternacht (00:00) an der Location",
+      "transport.bus_note":"Ein Bus hin, ein Bus zurück",
+      "transport.car_title":"Mit dem Auto",
+      "transport.car_body":"Direkt vor der Location gibt es kostenlose Parkplätze.",
+
+      "stay.eyebrow":"Unterkunft",
+      "stay.title":"Übernachtungsempfehlung",
+      "stay.body":"Wir empfehlen das Hotel Riazor in A Coruña. Am besten frühzeitig buchen, damit noch Zimmer verfügbar sind.",
+      "stay.note":"Gültig bis zum 12. Mai 2027.",
+      "stay.discount_info":"Wir haben mit dem Hotel gesprochen und einen Rabattcode für alle unsere Hochzeitsgäste bekommen.",
+      "stay.important":"<strong>Wichtig!</strong> Er gilt nur bei Buchung direkt auf der Website des Hotels: Gebt ihn bei der Auswahl der Reisedaten ein und sucht euch dann ein beliebiges Zimmer aus.",
+      "stay.link_label":"Hotel ansehen →",
+      "stay.discount":"Code für 12 % Rabatt: MARTAYFLO",
+
+      "airports.eyebrow":"Für Gäste aus dem Ausland",
+      "airports.title":"Nächstgelegene Flughäfen",
+      "airports.intro":"Falls ihr von weiter her anreist, hier sind eure Optionen, um A Coruña mit dem Flugzeug zu erreichen.",
+      "airports.scq_body":"~45 Min. von A Coruña entfernt. Der am besten angebundene Flughafen der Region, von den meisten anderen Orten geht es normalerweise über Madrid oder Barcelona.",
+      "airports.scq_body2":"Vom Flughafen aus müsst ihr zunächst zum Bahnhof Intermodal im Zentrum von Santiago und von dort einen Zug oder Bus nach A Coruña nehmen (bitte Fahrpläne online prüfen). Wir empfehlen trotzdem einen Mietwagen, da es schneller geht.",
+      "airports.lcg_body":"15 Min. vom Stadtzentrum entfernt. Ihr könnt einen Mietwagen nehmen oder ein Taxi (ca. 20-25€ ins Zentrum).",
+      "airports.lcg_body2":"Die nächstgelegene Option, allerdings mit sehr wenigen Direktverbindungen — von den meisten anderen Orten ist ein Zwischenstopp nötig.",
+      "airports.opo_title":"Porto, Portugal",
+      "airports.opo_body":"~2,5–3 Stunden mit dem Auto. Wird meist von Ryanair angeflogen. Ein Mietwagen ist nötig — es gibt nur wenige Busse oder Züge, und A Coruña mit öffentlichen Verkehrsmitteln zu erreichen ist umständlich.",
+      "airports.ovd_body":"~2 Stunden entfernt. Wird meist von Ryanair angeflogen. Auch hier ist ein Mietwagen nötig, da man mit öffentlichen Verkehrsmitteln kaum hinkommt.",
+      "airports.note":"Von vielen Orten aus gibt es keinen Direktflug nach Galicien — meistens geht es über Madrid oder Barcelona.",
+
+      "dresscode.eyebrow":"Was ihr anzieht",
+      "dresscode.title":"Dresscode: Elegant",
+      "dresscode.body":"Wir setzen auf eine elegante Atmosphäre, aber nichts im Stil von Black Tie — etwas Formalität würde uns freuen, eine Krawatte ist aber natürlich nicht Pflicht.",
+      "dresscode.color_note":"Die einzige Farbe, um die wir bitten sie zu vermeiden, ist Weiß und Elfenbein, die der Braut vorbehalten sind.",
+
+      "rsvp.eyebrow":"Zusage","rsvp.title":"Jetzt zusagen",
+      "rsvp.intro":"Formular ausfüllen und senden: WhatsApp öffnet sich mit der fertigen Nachricht an uns.",
+      "rsvp.deadline":"Bitte bis zum 26. April 2027 zusagen",
+      "rsvp.count":"Wie viele seid ihr?",
+      "rsvp.name":"Name(n)",
+      "rsvp.name_hint":"Wenn ihr als Paar oder Gruppe kommt, tragt bitte alle Namen ein",
+      "rsvp.contact":"Telefonnummer",
+      "rsvp.attending":"Seid ihr dabei?",
+      "rsvp.yes":"Ja, wir kommen","rsvp.no":"Leider können wir nicht",
+      "rsvp.allergies":"Allergien oder Unverträglichkeiten (von allen, die kommen)",
+      "rsvp.bus":"Braucht ihr den Bus ab A Coruña?",
+      "rsvp.bus_both":"Hin- und Rückfahrt","rsvp.bus_out_only":"Nur Hinfahrt","rsvp.bus_back_only":"Nur Rückfahrt","rsvp.bus_none":"Nein, danke",
+      "rsvp.message":"Nachricht an das Brautpaar (optional)",
+      "rsvp.send_wa":"Per WhatsApp senden",
+      "rsvp.note":"Dadurch öffnet sich WhatsApp mit der fertig geschriebenen Nachricht — ihr müsst nur noch senden.",
+
+      "gifts.eyebrow":"Details","gifts.title":"Geschenke",
+      "gifts.body":"Euer Kommen ist für uns das größte Geschenk. Gerade für alle, die extra von Deutschland nach Spanien anreisen, wissen wir eure Zeit und Mühe sehr zu schätzen.",
+      "gifts.body3":"Falls ihr uns darüber hinaus gerne etwas schenken möchtet, freuen wir uns über einen kleinen Beitrag für unsere Flitterwochen und unser gemeinsames Leben.",
+      "gifts.bank_label":"Bankverbindung (IBAN)",
+      "gifts.holder":"Marta Paz und Florian Weiland",
+
+      "playlist.eyebrow":"Musik","playlist.title":"Helft uns bei der Playlist",
+      "playlist.intro":"Fügt euren Lieblingssong direkt zur Spotify-Playlist hinzu — die läuft auf der Party!",
+      "playlist.spotify_link":"Song auf Spotify hinzufügen",
+
+      "footer.thanks":"Danke, dass ihr Teil unseres Tages seid — wir sehen uns in A Coruña!",
+
+      "todo.eyebrow":"Rund um die Hochzeit","todo.title":"Sehenswürdigkeiten in der Nähe",
+      "todo.intro":"Macht ihr einen Ausflug daraus? Hier sind ein paar Orte in Galicien, die sich vor oder nach der Hochzeit lohnen.",
+      "todo.coruna_dist":"Direkt vor Ort",
+      "todo.coruna_title":"A Coruña",
+      "todo.coruna_body":"Heimat des Herkulesturms, des ältesten noch genutzten römischen Leuchtturms. Spaziert die Strandpromenade entlang, entspannt am Strand Riazor oder Orzán und schlendert durch die Altstadt rund um die Plaza de María Pita bei Tapas und Pulpo.",
+      "todo.coruna_credit":"Foto: Manu Paz (Martas Papa)",
+      "todo.catedrais_credit":"Foto: Manu Paz (Martas Papa)",
+      "todo.santiago_dist":"~1 Stunde entfernt",
+      "todo.santiago_title":"Santiago de Compostela",
+      "todo.santiago_body":"Das Ziel des Jakobswegs. Die Kathedrale und die Praza do Obradoiro sind ein Muss, und die steinernen Gassen der Altstadt samt Markthalle laden zu einem gemütlichen Nachmittag ein.",
+      "todo.fisterra_dist":"~1,5 Stunden entfernt",
+      "todo.fisterra_title":"Fisterra (Finisterre)",
+      "todo.fisterra_body":"Von den Römern einst als das Ende der bekannten Welt angesehen. Dramatische Atlantikklippen, ein Leuchtturm an der äußersten Spitze und einige der schönsten Sonnenuntergänge der Costa da Morte.",
+      "todo.catedrais_dist":"~1,5–2 Stunden entfernt",
+      "todo.catedrais_title":"Praia das Catedrais",
+      "todo.catedrais_body":"Ein beeindruckender Strand bei Ribadeo mit natürlichen, von der Gezeitenströmung geformten Felsbögen. Nur bei Ebbe zugänglich — vorher die Gezeitentabelle prüfen.",
+      "todo.sanxoan_dist":"23.–24. Juni",
+      "todo.sanxoan_title":"Noite de San Xoán (Johannisnacht)",
+      "todo.sanxoan_body":"In der Nacht vom 23. auf den 24. Juni feiert A Coruña eine der größten Johannisnacht-Feiern Galiciens: Lagerfeuer an den Stränden Orzán und Riazor, gegrillte Sardinen und Feuerwerk bis in die frühen Morgenstunden. Wer ein paar Tage vor der Hochzeit anreist, sollte es sich nicht entgehen lassen.",
+      "todo.sanxoan_myths":"Es ist eine Nacht voller galicischer Mythologie: Sie fällt in die Nähe der Sommersonnenwende, der kürzesten Nacht des Jahres, und der Legende nach sind in dieser Nacht die Meigas, die galicischen Hexen, unterwegs. Man springt über die Flammen, um Glück zu bringen, sammelt Johanniskräuter zum Schutz fürs ganze Jahr, und viele nehmen um Mitternacht ein Bad im Meer.",
+      "todo.sanxoan_credit":"Foto: Manu Paz (Martas Papa)",
+      "todo.santiago_credit":"Foto: Manu Paz (Martas Papa)",
+
+      "food.eyebrow":"Essen wie ein Local",
+      "food.title":"Wo man in A Coruña isst",
+      "food.intro":"Vier lokale Klassiker, die jeder in der Stadt kennt.",
+      "food.penela_title":"La Penela",
+      "food.penela_body":"An der Plaza de María Pita, direkt gegenüber dem Rathaus. Klassische galicische Küche — Meeresfrüchte, Wildfisch und die berühmte Tortilla im Betanzos-Stil.",
+      "food.pulpeira_title":"Pulpeira de Melide",
+      "food.pulpeira_body":"Vier Generationen von Pulpeiros stehen hinter einer der besten Adressen der Stadt für Pulpo á feira. Lebendig und meist gut besucht — reserviert am besten vorher.",
+      "food.bombilla_title":"La Bombilla",
+      "food.bombilla_body":"Eine Tapas-Bar in der Calle Torreiro, die seit 1937 geöffnet hat. Tortilla, Pinchos und Kroketten in schnörkelloser Atmosphäre — eine echte Coruña-Institution.",
+      "food.estrella_title":"Cervecería Estrella Galicia",
+      "food.estrella_body":"Im Gebäude der ursprünglichen Estrella-Galicia-Brauerei von 1906, im Viertel Cuatro Caminos. Traditionelle galicische Küche und das hauseigene Bier direkt an der Quelle.",
+      "food.specialties_label":"Unbedingt probieren:",
+      "food.chip_empanada":"Empanada gallega",
+      "food.chip_percebes":"Percebes (Entenmuscheln)",
+      "food.chip_albarino":"Albariño-Wein",
+      "food.bombilla_note":"La Bombilla nimmt keine Reservierungen an — es ist reiner Thekenbetrieb, plant bei Andrang etwas mehr Zeit ein.",
+    }
+  };
+
+  var current = "es";
+
+  function applyLang(lang){
+    current = lang;
+    document.documentElement.lang = lang;
+    var dict = T[lang];
+    document.querySelectorAll("[data-i18n]").forEach(function(el){
+      var key = el.getAttribute("data-i18n");
+      if(dict[key] !== undefined){ el.textContent = dict[key]; }
+    });
+    document.querySelectorAll("[data-i18n-html]").forEach(function(el){
+      var key = el.getAttribute("data-i18n-html");
+      if(dict[key] !== undefined){ el.innerHTML = dict[key]; }
+    });
+    document.querySelectorAll("[data-i18n-placeholder]").forEach(function(el){
+      var key = el.getAttribute("data-i18n-placeholder");
+      if(dict[key] !== undefined){ el.placeholder = dict[key]; }
+    });
+    document.querySelectorAll("[data-lang-only]").forEach(function(el){
+      var langs = el.getAttribute("data-lang-only").split(" ");
+      el.style.display = langs.indexOf(lang) !== -1 ? "block" : "none";
+    });
+    document.querySelectorAll(".langbtn").forEach(function(btn){
+      btn.setAttribute("aria-pressed", btn.getAttribute("data-lang") === lang ? "true" : "false");
+    });
+    try{ localStorage.setItem("boda_lang", lang); }catch(e){}
+  }
+
+  document.querySelectorAll(".langbtn").forEach(function(btn){
+    btn.addEventListener("click", function(){ applyLang(btn.getAttribute("data-lang")); });
+  });
+
+  var initial = "es";
+  try{
+    var saved = localStorage.getItem("boda_lang");
+    if(saved && T[saved]) initial = saved;
+  }catch(e){}
+  applyLang(initial);
+
+  // index modal
+  var indexBtn = document.getElementById("indexBtn");
+  var indexOverlay = document.getElementById("indexOverlay");
+  var indexClose = document.getElementById("indexClose");
+  function openIndex(){ indexOverlay.classList.add("open"); }
+  function closeIndex(){ indexOverlay.classList.remove("open"); }
+  indexBtn.addEventListener("click", openIndex);
+  indexClose.addEventListener("click", closeIndex);
+  indexOverlay.addEventListener("click", function(e){
+    if(e.target === indexOverlay) closeIndex();
+  });
+  indexOverlay.querySelectorAll(".index-card").forEach(function(a){
+    a.addEventListener("click", closeIndex);
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") closeIndex();
+  });
+
+  // search
+  var searchBtn = document.getElementById("searchBtn");
+  var searchOverlay = document.getElementById("searchOverlay");
+  var searchClose = document.getElementById("searchClose");
+  var searchInput = document.getElementById("searchInput");
+  var searchStatus = document.getElementById("searchStatus");
+  var searchMarks = [];
+  var searchCurrent = -1;
+
+  function openSearch(){
+    searchOverlay.classList.add("open");
+    setTimeout(function(){ searchInput.focus(); }, 50);
+  }
+  function closeSearch(){
+    searchOverlay.classList.remove("open");
+    clearSearchMarks();
+    searchInput.value = "";
+    searchStatus.textContent = "";
+  }
+  searchBtn.addEventListener("click", openSearch);
+  searchClose.addEventListener("click", closeSearch);
+  searchOverlay.addEventListener("click", function(e){
+    if(e.target === searchOverlay) closeSearch();
+  });
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape") closeSearch();
+  });
+
+  function clearSearchMarks(){
+    searchMarks.forEach(function(mark){
+      var parent = mark.parentNode;
+      if(!parent) return;
+      parent.replaceChild(document.createTextNode(mark.textContent), mark);
+      parent.normalize();
+    });
+    searchMarks = [];
+    searchCurrent = -1;
+  }
+
+  function updateCurrentMark(){
+    searchMarks.forEach(function(m, i){ m.classList.toggle("search-current", i === searchCurrent); });
+  }
+
+  function runSearch(query){
+    clearSearchMarks();
+    query = query.trim();
+    if(query.length < 2){ searchStatus.textContent = ""; return; }
+    var lower = query.toLowerCase();
+    var main = document.querySelector("main");
+    var walker = document.createTreeWalker(main, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(node){
+        if(!node.nodeValue || node.nodeValue.toLowerCase().indexOf(lower) === -1) return NodeFilter.FILTER_SKIP;
+        var p = node.parentElement;
+        if(p && (p.tagName === "SCRIPT" || p.tagName === "STYLE")) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes = [];
+    var n;
+    while((n = walker.nextNode())) nodes.push(n);
+
+    nodes.forEach(function(node){
+      var text = node.nodeValue;
+      var lowerText = text.toLowerCase();
+      var frag = document.createDocumentFragment();
+      var lastIndex = 0;
+      var idx = lowerText.indexOf(lower);
+      while(idx !== -1){
+        if(idx > lastIndex) frag.appendChild(document.createTextNode(text.slice(lastIndex, idx)));
+        var mark = document.createElement("mark");
+        mark.className = "search-hit";
+        mark.textContent = text.slice(idx, idx + query.length);
+        frag.appendChild(mark);
+        searchMarks.push(mark);
+        lastIndex = idx + query.length;
+        idx = lowerText.indexOf(lower, lastIndex);
+      }
+      if(lastIndex < text.length) frag.appendChild(document.createTextNode(text.slice(lastIndex)));
+      node.parentNode.replaceChild(frag, node);
+    });
+
+    if(searchMarks.length === 0){
+      searchStatus.textContent = T[current]["search.no_results"];
+    } else {
+      searchCurrent = 0;
+      updateCurrentMark();
+      searchStatus.textContent = searchMarks.length === 1 ? T[current]["search.one_result"] : (searchMarks.length + " " + T[current]["search.results"]);
+      searchMarks[0].scrollIntoView({behavior:"smooth", block:"center"});
+    }
+  }
+
+  searchInput.addEventListener("input", function(){ runSearch(searchInput.value); });
+  searchInput.addEventListener("keydown", function(e){
+    if(e.key === "Enter" && searchMarks.length > 0){
+      e.preventDefault();
+      searchCurrent = (searchCurrent + 1) % searchMarks.length;
+      updateCurrentMark();
+      searchMarks[searchCurrent].scrollIntoView({behavior:"smooth", block:"center"});
+    }
+  });
+
+  // countdown
+  var target = new Date("2027-06-26T13:00:00+02:00").getTime();
+  function tick(){
+    var now = Date.now();
+    var diff = Math.max(0, target - now);
+    var d = Math.floor(diff/86400000);
+    var h = Math.floor((diff%86400000)/3600000);
+    var m = Math.floor((diff%3600000)/60000);
+    var s = Math.floor((diff%60000)/1000);
+    var pad = function(n){ return String(n).padStart(2,"0"); };
+    document.getElementById("cd-days").textContent = d;
+    document.getElementById("cd-hours").textContent = pad(h);
+    document.getElementById("cd-min").textContent = pad(m);
+    document.getElementById("cd-sec").textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // reveal on scroll
+  if("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); }
+      });
+    }, {threshold:0});
+    document.querySelectorAll(".reveal").forEach(function(el){ io.observe(el); });
+  } else {
+    document.querySelectorAll(".reveal").forEach(function(el){ el.classList.add("in"); });
+  }
+
+  // RSVP -> mailto / whatsapp
+  function buildRsvpText(){
+    var dict = T[current];
+    var count = document.getElementById("r-count").value.trim();
+    var name = document.getElementById("r-name").value.trim();
+    var contact = document.getElementById("r-contact").value.trim();
+    var attending = document.querySelector('input[name="attending"]:checked').value;
+    var allergies = document.getElementById("r-allergies").value.trim();
+    var bus = document.querySelector('input[name="bus"]:checked').value;
+    var msg = document.getElementById("r-msg").value.trim();
+
+    var busLabel = {both:dict["rsvp.bus_both"], out:dict["rsvp.bus_out_only"], back:dict["rsvp.bus_back_only"], none:dict["rsvp.bus_none"]}[bus];
+    var attLabel = attending === "yes" ? dict["rsvp.yes"] : dict["rsvp.no"];
+
+    var lines = [
+      "RSVP — Marta & Flo (26.06.2027)",
+      "",
+      dict["rsvp.count"] + ": " + count,
+      dict["rsvp.name"] + ": " + name,
+      dict["rsvp.contact"] + ": " + contact,
+      dict["rsvp.attending"] + " " + attLabel,
+      dict["rsvp.allergies"] + ": " + (allergies || "-"),
+      dict["rsvp.bus"] + " " + busLabel,
+      dict["rsvp.message"] + ": " + (msg || "-")
+    ];
+    return lines.join("\n");
+  }
+
+  var waBtn = document.getElementById("rsvpWaBtn");
+  var rsvpForm = document.getElementById("rsvpForm");
+  function updateWaLink(){
+    waBtn.href = "https://wa.me/34661176937?text=" + encodeURIComponent(buildRsvpText());
+  }
+  rsvpForm.addEventListener("input", updateWaLink);
+  rsvpForm.addEventListener("change", updateWaLink);
+  waBtn.addEventListener("click", function(e){
+    if(!rsvpForm.reportValidity()){ e.preventDefault(); return; }
+    updateWaLink();
+  });
+  updateWaLink();
+
+})();
+</script>
+
+</body>
+</html>
